@@ -1,9 +1,9 @@
-from textnode import TextNode # type: ignore
+from textnode import TextNode   # type: ignore
+
 
 def main():
-    TN = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    print(TN)
+    node = TextNode("This is a text node", "bold", "https://www.boot.dev")
+    print(node)
 
-if __name__ == "__main__":
-    main()
-# print("hello world")
+
+main()
