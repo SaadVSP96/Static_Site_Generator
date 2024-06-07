@@ -1,3 +1,4 @@
+from htmlnode import HTMLNode, LeafNode, ParentNode  # type: ignore
 
 text_type_text = "text"
 text_type_bold = "bold"
@@ -25,3 +26,30 @@ class TextNode:
         """a __repr__ method that returns a string representation
         of the TextNode object"""
         return f"TextNode({self.TEXT}, {self.TEXT_TYPE}, {self.URL})"
+    
+def text_node_to_html_node(text_node: TextNode):
+    """A function to convert a TextNode to an HTMLNode.
+    Well, to be specific, converting to a LeafNode."""
+    if text_node.TEXT_TYPE == text_type_text:
+        html_node = LeafNode(None, text_node.TEXT, None)
+    elif text_node.TEXT_TYPE == text_type_bold:
+        html_node = LeafNode("b", text_node.TEXT, None)
+    elif text_node.TEXT_TYPE == text_type_italic:
+        html_node = LeafNode("i", text_node.TEXT, None)
+    elif text_node.TEXT_TYPE == text_type_code:
+        html_node = LeafNode("code", text_node.TEXT, None)
+    elif text_node.TEXT_TYPE == text_type_link:
+        if hasattr(text_node,"URL"):
+            html_node = LeafNode("a", text_node.TEXT, {"href": text_node.URL})
+        else:
+            raise AttributeError("TextNode of type 'link' must have a 'URL'")
+    elif text_node.TEXT_TYPE == text_type_image:
+        if hasattr(text_node, "URL") and hasattr(text_node, "TEXT"):
+            html_node = LeafNode("img", text_node.TEXT, {"src": text_node.URL, "alt": text_node.TEXT})
+        else:
+            raise AttributeError("TextNode of type 'image' must have 'URL' and 'TEXT'")
+    else:
+        raise ValueError("improper textnode type supplied")
+    
+    return html_node
+
