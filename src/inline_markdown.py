@@ -39,13 +39,13 @@ def extract_markdown_links(text: str) -> list[tuple]:
     return matches
 
 
-def split_nodes_image(old_nodes):
+def split_nodes_image(old_nodes:list[TextNode]):
     new_nodes = []
     for old_node in old_nodes:
-        if old_node.text_type != text_type_text:
+        if old_node.TEXT_TYPE != text_type_text:
             new_nodes.append(old_node)
             continue
-        original_text = old_node.text
+        original_text = old_node.TEXT
         images = extract_markdown_images(original_text)
         if len(images) == 0:
             new_nodes.append(old_node)
@@ -69,13 +69,13 @@ def split_nodes_image(old_nodes):
     return new_nodes
 
 
-def split_nodes_link(old_nodes):
+def split_nodes_link(old_nodes:list[TextNode]):
     new_nodes = []
     for old_node in old_nodes:
-        if old_node.text_type != text_type_text:
+        if old_node.TEXT_TYPE != text_type_text:
             new_nodes.append(old_node)
             continue
-        original_text = old_node.text
+        original_text = old_node.TEXT
         links = extract_markdown_links(original_text)
         if len(links) == 0:
             new_nodes.append(old_node)
@@ -92,22 +92,4 @@ def split_nodes_link(old_nodes):
             new_nodes.append(TextNode(original_text, text_type_text))
     return new_nodes
 
-
-node = TextNode(
-    "This is text with a [link](https://boot.dev) and [another link](https://blog.boot.dev) with text that follows",
-    text_type_text,
-)
-new_nodes = split_nodes_link([node])
-
-print(new_nodes)
-
-test_nodes =    [
-    TextNode("This is text with a ", text_type_text),
-    TextNode("link", text_type_link, "https://boot.dev"),
-    TextNode(" and ", text_type_text),
-    TextNode("another link", text_type_link, "https://blog.boot.dev"),
-    TextNode(" with text that follows", text_type_text),
-],
-
-print(new_nodes == test_nodes)
 
