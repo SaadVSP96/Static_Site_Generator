@@ -40,45 +40,59 @@ def extract_markdown_links(text: str) -> list[tuple]:
 
 def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
+    image_pattern = re.compile(r"(.*?)!\[(.*?)\]\((.*?)\)")
+
     for old_node in old_nodes:
         if old_node.TEXT_TYPE != text_type_text:
             new_nodes.append(old_node)
             continue
-        matches = re.findall(r"(.*?)!\[(.*?)\]\((.*?)\)", old_node.TEXT)
-        for match in matches:
-            i = 0
-            while i < len(match):
-                if not match[i]:
-                    i +=1 
-                    continue
-                elif match[i] and ("image" not in match[i]):
-                    new_nodes.append(TextNode(match[i], text_type_text))
-                    i += 1
-                elif "image" in match[i]:
-                    new_nodes.append(TextNode(match[i], text_type_image, match[i+1]))
-                    i += 2
+
+        pos = 0
+        for match in image_pattern.finditer(old_node.TEXT):
+            # Add the text before the image
+            if match.group(1):
+                new_nodes.append(TextNode(match.group(1), text_type_text))
+
+            # Add the image
+            new_nodes.append(TextNode(match.group(2), text_type_image, match.group(3)))
+
+            # Update position
+            pos = match.end()
+
+        # Add any remaining text after the last match
+        if pos < len(old_node.TEXT):
+            new_nodes.append(TextNode(old_node.TEXT[pos:], text_type_text))
+
     return new_nodes
+
 
 def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
+    link_pattern = re.compile(r"(.*?)\[(.*?)\]\((.*?)\)")
+
     for old_node in old_nodes:
         if old_node.TEXT_TYPE != text_type_text:
             new_nodes.append(old_node)
             continue
-        matches = re.findall(r"(.*?)\[(.*?)\]\((.*?)\)", old_node.TEXT)
-        for match in matches:
-            i = 0
-            while i < len(match):
-                if not match[i]:
-                    i +=1 
-                    continue
-                elif match[i] and ("link" not in match[i]):
-                    new_nodes.append(TextNode(match[i], text_type_text))
-                    i += 1
-                elif "link" in match[i]:
-                    new_nodes.append(TextNode(match[i], text_type_link, match[i+1]))
-                    i += 2
+
+        pos = 0
+        for match in link_pattern.finditer(old_node.TEXT):
+            # Add the text before the link
+            if match.group(1):
+                new_nodes.append(TextNode(match.group(1), text_type_text))
+
+            # Add the link
+            new_nodes.append(TextNode(match.group(2), text_type_link, match.group(3)))
+
+            # Update position
+            pos = match.end()
+
+        # Add any remaining text after the last match
+        if pos < len(old_node.TEXT):
+            new_nodes.append(TextNode(old_node.TEXT[pos:], text_type_text))
+
     return new_nodes
+
 
 node = TextNode(
     "This is text with a [link](https://boot.dev) and [another link](https://blog.boot.dev) with text that follows",
