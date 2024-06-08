@@ -41,6 +41,9 @@ def extract_markdown_links(text: str) -> list[tuple]:
 def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
     for old_node in old_nodes:
+        if old_node.TEXT_TYPE != text_type_text:
+            new_nodes.append(old_node)
+            continue
         matches = re.findall(r"(.*?)!\[(.*?)\]\((.*?)\)", old_node.TEXT)
         for match in matches:
             i = 0
@@ -59,6 +62,9 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
 def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
     new_nodes = []
     for old_node in old_nodes:
+        if old_node.TEXT_TYPE != text_type_text:
+            new_nodes.append(old_node)
+            continue
         matches = re.findall(r"(.*?)\[(.*?)\]\((.*?)\)", old_node.TEXT)
         for match in matches:
             i = 0
@@ -74,17 +80,21 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
                     i += 2
     return new_nodes
 
-
 node = TextNode(
-    "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
-    text_type_text,
-)
-new_nodes = split_nodes_image([node])
-print(new_nodes)
-
-node = TextNode(
-    "Some text with a [link](https://example.com) and another [second link](https://example.org)",
+    "This is text with a [link](https://boot.dev) and [another link](https://blog.boot.dev) with text that follows",
     text_type_text,
 )
 new_nodes = split_nodes_link([node])
+
 print(new_nodes)
+
+test_nodes =    [
+    TextNode("This is text with a ", text_type_text),
+    TextNode("link", text_type_link, "https://boot.dev"),
+    TextNode(" and ", text_type_text),
+    TextNode("another link", text_type_link, "https://blog.boot.dev"),
+    TextNode(" with text that follows", text_type_text),
+],
+
+print(new_nodes == test_nodes)
+
