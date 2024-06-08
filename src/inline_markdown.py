@@ -93,22 +93,3 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
 
     return new_nodes
 
-
-node = TextNode(
-    "This is text with a [link](https://boot.dev) and [another link](https://blog.boot.dev) with text that follows",
-    text_type_text,
-)
-new_nodes = split_nodes_link([node])
-
-print(new_nodes)
-
-test_nodes =    [
-    TextNode("This is text with a ", text_type_text),
-    TextNode("link", text_type_link, "https://boot.dev"),
-    TextNode(" and ", text_type_text),
-    TextNode("another link", text_type_link, "https://blog.boot.dev"),
-    TextNode(" with text that follows", text_type_text),
-],
-
-print(new_nodes == test_nodes)
-
