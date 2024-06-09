@@ -114,23 +114,3 @@ def markdown_to_blocks(markdown: str):
     md_block_list = markdown.split("\n")
     md_block_list = [block.strip() for block in markdown.split("\n") if block.strip()]
     return md_block_list
-
-def test_markdown_to_blocks():
-    markdown = """This is **bolded** paragraph
-
-This is another paragraph with *italic* text and `code` here
-This is the same paragraph on a new line
-
-* This is a list
-* with items"""
-    print(markdown_to_blocks(markdown))
-    expected_output = [
-        "This is **bolded** paragraph",
-        "This is another paragraph with *italic* text and `code` here","This is the same paragraph on a new line",
-        "* This is a list","* with items"
-    ]
-    result = markdown_to_blocks(markdown)
-    assert result == expected_output, f"Expected {expected_output} but got {result}"
-
-# Call the test function to see if it passes
-test_markdown_to_blocks()
