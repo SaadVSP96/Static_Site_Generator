@@ -7,6 +7,7 @@ from inline_markdown import (
     split_nodes_image,
     split_nodes_link,
     text_to_textnodes,
+    markdown_to_blocks,
 )
 from textnode import (
     TextNode,
@@ -217,6 +218,23 @@ class TestInlineMarkdown(unittest.TestCase):
             ],
             new_nodes,
         )
+
+    def test_markdown_to_blocks(self):
+        markdown = """This is **bolded** paragraph
+
+        This is another paragraph with *italic* text and `code` here
+        This is the same paragraph on a new line
+
+        * This is a list
+        * with items"""
+        blocks_list = markdown_to_blocks(markdown)
+        expected_output = [
+            "This is **bolded** paragraph",
+            "This is another paragraph with *italic* text and `code` here","This is the same paragraph on a new line",
+            "* This is a list","* with items"
+        ]
+        self.assertListEqual(blocks_list, expected_output)
+        
 
 if __name__ == "__main__":
     unittest.main()
