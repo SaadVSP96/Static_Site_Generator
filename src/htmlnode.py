@@ -70,19 +70,3 @@ class ParentNode(HTMLNode):
 
     def __repr__(self):
         return f"ParentNode({self.tag}, children: {self.children}, {self.props})"
-
-lfn = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
-print(lfn.to_html())
-
-print()
-
-node = ParentNode(
-    "p",
-    [
-        LeafNode("b", "Bold text"),
-        LeafNode(None, "Normal text"),
-        LeafNode("i", "italic text"),
-        LeafNode(None, "Normal text"),
-    ],
-)
-print(node.to_html())
