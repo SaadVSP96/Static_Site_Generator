@@ -92,4 +92,22 @@ def split_nodes_link(old_nodes:list[TextNode]):
             new_nodes.append(TextNode(original_text, text_type_text))
     return new_nodes
 
+def text_to_textnodes(text):
+    all_type_nodes = []
+    main_node = TextNode(text, text_type_text, None)
+    w_bold_nodes = split_nodes_delimiter([main_node], "**", text_type_bold)
+    w_bold_italic_nodes = []
+    for node in w_bold_nodes:
+        w_bold_italic_nodes.extend(split_nodes_delimiter([node], "*", text_type_italic))
+    w_bold_italic_code_nodes = []
+    for node in w_bold_italic_nodes:
+        w_bold_italic_code_nodes.extend(split_nodes_delimiter([node], "`", text_type_code))
+    w_bold_italic_code_image_nodes = []
+    for node in w_bold_italic_code_nodes:
+        w_bold_italic_code_image_nodes.extend(split_nodes_image([node]))
+    for node in w_bold_italic_code_image_nodes:
+        all_type_nodes.extend(split_nodes_link([node]))
+    return all_type_nodes
 
+text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
+print(text_to_textnodes(text))
