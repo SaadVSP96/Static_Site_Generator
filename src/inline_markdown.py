@@ -108,6 +108,3 @@ def text_to_textnodes(text):
     for node in w_bold_italic_code_image_nodes:
         all_type_nodes.extend(split_nodes_link([node]))
     return all_type_nodes
-
-text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
-print(text_to_textnodes(text))
