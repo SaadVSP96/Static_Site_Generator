@@ -1,6 +1,6 @@
 import unittest
 
-from textnode import (  #type: ignore
+from textnode import (  
     TextNode,
     text_type_text,
     text_type_bold,

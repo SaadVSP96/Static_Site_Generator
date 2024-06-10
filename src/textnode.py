@@ -1,4 +1,4 @@
-from htmlnode import HTMLNode, LeafNode, ParentNode  # type: ignore
+from htmlnode import HTMLNode, LeafNode, ParentNode 
 
 text_type_text = "text"
 text_type_bold = "bold"
