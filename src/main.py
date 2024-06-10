@@ -2,7 +2,7 @@ import os
 import shutil
 
 from copystatic import copy_files_recursive
-from gencontent import generate_page
+from gencontent import generate_pages_recursive
 
 # Get the directory containing this script
 script_dir = os.path.abspath(os.path.dirname(__file__))
@@ -36,12 +36,7 @@ def main():
     print("Copying static files to public directory...")
     copy_files_recursive(dir_path_static, dir_path_public)
 
-    print("Generating page...")
-    generate_page(
-        os.path.join(dir_path_content, "index.md"),
-        dir_path_template,
-        os.path.join(dir_path_public, "index.html"),
-    )
-
+    print("Generating content...")
+    generate_pages_recursive(dir_path_content, dir_path_template, dir_path_public)
 
 main()
